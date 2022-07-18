@@ -1,16 +1,19 @@
 import requests, os, json
 
-sonarrAPIKey = os.environ.get('sonarr_api_key')
-status_url = "http://localhost:8989/api/system/status?apikey={}".format(sonarrAPIKey)
-url = 'http://localhost:8989/api/series?apikey={}'.format(sonarrAPIKey)
+status_url = "http://localhost:8989/api/system/status?apikey={}".format(os.environ.get('sonarr_api_key'))
+
+url = 'http://localhost:8989/api/series?apikey={}'.format(os.environ.get('sonarr_api_key'))
+
 sonarr_series_title = 'City on a Hill'
 
+response = requests.get(url).text
 
-response = json.loads(requests.get(url).text)
 
 # Here is a List of Dictionaries for all the Series
-# series = json.loads(response.text)
+series = json.loads(response)
 print("type: {}".format(type(series)))
+# exit()
+
 
 # How many Program Titles
 print("The number of Series Titles is {}".format(len(series)))
@@ -26,11 +29,11 @@ for row in series:
 # Using List Comprehension to do the same:
 SeriesInfo = [[(k,v) for k,v in s.items()] for s in series]
 # print(series.items())
-print("Series Info: {}".format(SeriesInfo))
+# print("Series Info: {}".format(SeriesInfo))
 
 # >> [[(k,v) for k,v in d.items() if k not in ['b','u']] for d in ld]
 SeriesValues = [[(v) for k,v in s.items() if k =='title'] for s in series]
-print("Series Values: {}".format(SeriesValues))
+# print("Series Values: {}".format(SeriesValues))
 
 '''
 LIST COMPREHENSION EXAMPLES
